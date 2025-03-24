@@ -1,0 +1,22 @@
+.contact {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 5px;
+
+    mat-icon {
+        opacity: 0;
+        transition: 0.2s ease-in-out;
+    }
+     
+    &:hover {
+        background-color: #1f1f1f;
+
+        mat-icon {
+            opacity: 1;
+        }
+    }
+}

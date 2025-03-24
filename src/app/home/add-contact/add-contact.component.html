@@ -1,0 +1,16 @@
+<h2 style="color: #cfcfcf; padding:1rem 0.2rem; margin: 0 2rem; border-bottom: #cfcfcf 1px solid;">
+Users
+</h2>
+<mat-dialog-content style="width:400px;">
+    <div style="padding: 0 1rem; margin-bottom: 1rem; overflow: auto; max-height: 250px; display: flex; flex-direction: column; gap: 0.2rem;">
+        <div *ngFor="let user of users" (click)="addContact(user)" class="contact">
+            <div style="padding: 0.2rem;">
+                {{user.name}}
+            </div> 
+            <mat-icon>
+                add
+            </mat-icon>
+        </div>
+    </div>
+    <div style="border-bottom: #cfcfcf 1px solid;"></div>
+</mat-dialog-content>

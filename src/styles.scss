@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use './theme-colors.scss' as my-theme;
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html {
+  @include mat.theme((
+    color: (
+      primary: my-theme.$primary-palette,
+      tertiary: my-theme.$primary-palette,
+      theme-type: dark,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}

@@ -1,0 +1,52 @@
+
+<app-auth
+  [title]="title"
+  [subTitle]="subTitle"
+  [content]="content"
+  [footer]="footer"
+>
+</app-auth>
+
+<ng-template #title>Log in to your account</ng-template>
+<ng-template #subTitle>Enter your email and password below to log in</ng-template>
+<ng-template #content>
+  <form (ngSubmit)="onLogin()" style="display: flex; flex-direction: column; gap: 1.2em;">
+
+    <mat-form-field class="form-field" appearance="outline" floatLabel="always">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput [formControl]="emailFormControl">
+      @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+        <mat-error>Please enter a valid email address</mat-error>
+      }
+      @if (emailFormControl.hasError('required')) {
+        <mat-error>Email is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="outline" floatLabel="always">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput [formControl]="passwordFormControl">
+      @if (passwordFormControl.hasError('required')) {
+        <mat-error>Password is required</mat-error>
+      }
+    </mat-form-field>
+
+    <button type="submit" mat-flat-button [disabled]="!passwordFormControl.valid || !emailFormControl.valid">Log in</button>
+
+    <div class="register" >
+      Don't have an account?
+      <a routerLink="/register">Sign up</a>
+    </div>
+
+  </form>
+</ng-template>
+<ng-template #footer>
+  <div class="footer-error" [ngClass]="hasApiErros() ? 'show' : ''">
+    @if (hasApiErros())
+    {
+        <div *ngFor="let value of this.apiErrors">
+          {{value}}
+        </div>
+    }
+  </div>
+</ng-template>

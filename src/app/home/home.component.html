@@ -1,0 +1,87 @@
+<mat-drawer-container style="height: 100%;">
+    <mat-drawer mode="side" opened style="max-width: 15rem;">
+        <div class="side-draw">
+            <h1 style="position: absolute; top: 0; margin: 0; font-size: 14px; padding: 0.5rem;">Messaging App</h1>
+            <button (click)="onAddContactClick()" style="height: 3rem; width: 80%; align-self: center;" mat-fab extended>
+                <mat-icon>person_add</mat-icon>
+                Add Contact
+            </button>
+            <div style="overflow: auto; flex: 1">
+                <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+                    <ng-container *ngFor="let contact of contacts">
+                        <div class="contact-container">
+                            <div class="indicator" [ngClass]="this.activeContact.id === contact.id ? 'active' : ''"></div>
+                            <div class="contact"
+                                [ngClass]="this.activeContact.id === contact.id ? 'active' : ''"
+                                (click)="switchChatContact(contact)"
+                            >
+                                {{contact.name}}
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <button [cdkMenuTriggerFor]="userMenu" class="user-button">
+                {{ this.username }}
+            </button>
+        </div>
+    </mat-drawer>
+    <mat-drawer-content style="background-color: #242424;">
+        <div style="padding: 2rem; height: 100%; box-sizing: border-box;">
+            <div style="display: flex; flex-direction: column; height: 100%;">
+                <div style="flex: 1; position: relative;">
+                    <div class="blocker" [ngClass]="loading ? '' : 'show'"></div>
+                    <cdk-virtual-scroll-viewport class="scroll-viewport" itemSize="50">
+                        <div *cdkVirtualFor="let  message of messages">
+                            <ng-container *ngTemplateOutlet="messageTemplate; context:{details:message}">
+                            </ng-container> 
+                        </div>
+                    </cdk-virtual-scroll-viewport>
+                </div>
+                <div *ngIf="this.activeContact.id !== -1" class="message-input-container">
+                    <div class="message-input">                            
+                        <textarea rows="1"
+                            [(ngModel)]="text"
+                            (input)="onInput($event)"
+                            (keydown.enter)="onEnterKey($event)"
+                            [placeholder]="'Message ' + activeContact.name"
+                        >
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>
+
+<ng-template let-details="details" #messageTemplate>
+    <div class="message-container">
+        <div class="sender-name">
+            <span>{{details.senderName}}</span>
+            <span class="time">{{details.timestamp * 1000 | date: this.dateFormat(details.timestamp)}}</span>
+            <mat-icon class="status" 
+                [svgIcon]="details.status.toLowerCase()" 
+                [ngClass]="details.status.toLowerCase()" 
+                [matTooltip]="details.status"
+                matTooltipPosition="right"
+            >
+            </mat-icon>
+        </div>
+        <div class="content">
+            {{details.content}}
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #userMenu>
+    <div cdkMenu class="user-menu">
+        <button class="user-button" cdkMenuItem
+            (cdkMenuItemTriggered)="logout()"
+            mat-fab extended
+        >
+        <mat-icon>logout</mat-icon>
+            Log Out
+        </button>
+    </div>
+</ng-template>
+  

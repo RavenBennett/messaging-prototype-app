@@ -1,0 +1,31 @@
+.form-field {
+    width: 100%;
+    
+    div {
+        background-color: lightblue;
+    }
+}
+
+.register 
+{
+    color:#969696; 
+    text-align: center;
+
+    a {
+        color:#a9a9a9;
+        transition: color 0.5s ease-in-out;
+
+        &:hover {
+            color:#d8d8d8;
+        }
+    }
+}
+
+.footer-error {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+
+    &.show {
+        opacity: 1;
+    }
+}

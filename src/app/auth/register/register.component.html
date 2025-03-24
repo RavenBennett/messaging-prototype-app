@@ -1,0 +1,92 @@
+
+<app-auth
+  [title]="title"
+  [subTitle]="subTitle"
+  [content]="content"
+  [footer]="footer"
+>
+</app-auth>
+
+<ng-template #title>Sign up for an account</ng-template>
+<ng-template #subTitle>Enter details below to register</ng-template>
+<ng-template #content>
+  <form [formGroup]="registrationForm" (ngSubmit)="onLogin()" style="display: flex; flex-direction: column; gap: 1.2em;">
+
+    <mat-form-field class="form-field" appearance="outline" floatLabel="always">
+      <mat-label>Name</mat-label>
+      <input type="text" matInput formControlName="name">
+      @if (registrationForm.get('name')?.errors?.['required']) {
+        <mat-error>Name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="outline" floatLabel="always">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="email">
+      @if (registrationForm.get('email')?.errors?.['email']) {
+        <mat-error>Please enter a valid email address</mat-error>
+      }
+      @else if (registrationForm.get('email')?.errors?.['required']) {
+        <mat-error>Email is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="outline" floatLabel="always">
+      <mat-label>Confirm Email</mat-label>
+      <input type="email" matInput formControlName="confirmEmail">
+      @if (registrationForm.hasError('emailMismatch')) {
+        <mat-error>Email does not match</mat-error>
+      }
+    </mat-form-field>
+
+
+    <mat-form-field class="form-field" appearance="outline" floatLabel="always">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput formControlName="password">
+      @if (registrationForm.get('password')?.errors?.['required']) {
+        <mat-error>Password is required</mat-error>
+      }
+      @if (registrationForm.get('password')?.errors?.['minlength']) {
+        <mat-error>Password must be at least 8 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="outline" floatLabel="always">
+      <mat-label>Confirm Password</mat-label>
+      <input type="password" matInput formControlName="confirmPassword">
+      @if (registrationForm.hasError('passwordMismatch')) {
+        <mat-error>Password does not match</mat-error>
+      }
+    </mat-form-field>
+
+    <button type="submit" mat-flat-button [disabled]="!registrationForm.valid">Sign up</button>
+
+    <div class="register" >
+      Have an account?
+      <a routerLink="/">Login</a>
+    </div>
+
+  </form>
+</ng-template>
+<ng-template #footer>
+  <div class="footer-error" [ngClass]="registrationForm.hasError('passwordMismatch') && registrationForm.get('confirmPassword')?.touched ? 'show' : ''">
+    @if (registrationForm.hasError('passwordMismatch') && registrationForm.get('confirmPassword')?.touched)
+    {
+      Passwords do not match.
+    }
+  </div>
+  <div class="footer-error" [ngClass]="registrationForm.hasError('emailMismatch') && registrationForm.get('confirmEmail')?.touched ? 'show' : ''">
+    @if(registrationForm.hasError('emailMismatch') && registrationForm.get('confirmEmail')?.touched)
+    {
+      Emails do not match.
+    }
+  </div>
+  <div class="footer-error" [ngClass]="hasApiErros() ? 'show' : ''">
+    @if (hasApiErros())
+    {
+        <div *ngFor="let value of this.apiErrors">
+          {{value}}
+        </div>
+    }
+  </div>
+</ng-template>
